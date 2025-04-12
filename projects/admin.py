@@ -19,7 +19,9 @@ class ProjectAdmin(admin.ModelAdmin):
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'email',
-                    'project', 'university_name', 'field_of_study', 'branch')
+                    'project', 'university_name', 'field_of_study', 'branch',
+                    'user_id', 'uuid', 'establishment_id')
     list_filter = ('university_name', 'country', 'field_of_study', 'branch')
     search_fields = ('first_name', 'last_name', 'email',
-                     'field_of_study', 'branch')
+                     'field_of_study', 'branch', 'user_id', 'uuid',
+                     'id_individual', 'establishment_id', 'user_name')

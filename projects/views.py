@@ -129,10 +129,12 @@ class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ['project', 'university_name',
-                        'country', 'field_of_study', 'branch']
-    search_fields = ['first_name', 'last_name',
-                     'email', 'field_of_study', 'branch']
+    filterset_fields = ['project', 'university_name', 'country',
+                        'field_of_study', 'branch', 'user_id',
+                        'establishment_id']
+    search_fields = ['first_name', 'last_name', 'email',
+                     'field_of_study', 'branch', 'user_id',
+                     'uuid', 'id_individual', 'establishment_id', 'user_name']
 
     def create(self, request, *args, **kwargs):
         """
