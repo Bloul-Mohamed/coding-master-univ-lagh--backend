@@ -31,8 +31,8 @@ schema_view = get_schema_view(
         default_version='v1',
         description="API for CodingMaster 2025 competition registration and project management",
         terms_of_service="https://www.example.com/terms/",
-        contact=openapi.Contact(email="contact@example.com"),
-        license=openapi.License(name="BSD License"),
+        contact=openapi.Contact(email="contact@univ-lagh.com"),
+        license=openapi.License(name="Univ License"),
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
@@ -46,6 +46,7 @@ urlpatterns = [
          ),
     path('api/projects/', include('projects.urls')),
     path('api/ai-analysis/', include('ai_anlysis.urls')),
+    path('api/pack/', include('pack.urls')),
 
 
 ] + debug_toolbar_urls()

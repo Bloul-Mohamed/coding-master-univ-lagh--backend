@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_swagger',  # Swagger
     'drf_yasg',                # Yet Another Swagger generator
+    'corsheaders',
     # Local apps
     # .....
     "accounts",
@@ -63,15 +64,19 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # Third-party middleware
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = "core.urls"
 
 TEMPLATES = [
@@ -145,3 +150,15 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 GEMINI_API_KEY = "AIzaSyBlDmhwFnkvFNqElQE6aPOfwu5DaJR_Rho"
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.example.com'  # Replace with your SMTP server
+EMAIL_PORT = 587  # Common ports: 587 (TLS), 465 (SSL)
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'hikodz2002@gmail.com'  # Replace with your email
+# Replace with your password or app password
+EMAIL_HOST_PASSWORD = 'Mb20022002'
+# Replace with your name and email
+DEFAULT_FROM_EMAIL = 'Your Name <your-email@example.com>'

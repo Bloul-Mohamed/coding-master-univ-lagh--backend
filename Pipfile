@@ -17,6 +17,7 @@ django-countries = "*"
 django-filter = "*"
 markdown = "*"
 google-generativeai = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 

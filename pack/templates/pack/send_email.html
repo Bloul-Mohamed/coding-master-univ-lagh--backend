@@ -1,0 +1,24 @@
+{% extends "base.html" %} <!-- Adjust to your actual base template -->
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Send Email to User</h2>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="form-group mb-3">
+      <label for="subject">Email Subject:</label>
+      <input type="text" class="form-control" id="subject" name="subject" required>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="message">Email Content (HTML supported):</label>
+      <textarea class="form-control" id="message" name="message" rows="10" required></textarea>
+      <small class="form-text text-muted">You can use HTML tags to format your email content.</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Send Email</button>
+  </form>
+</div>
+{% endblock %}
