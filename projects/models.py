@@ -61,8 +61,8 @@ class Student(models.Model):
         Project, on_delete=models.CASCADE, related_name='students')
     university_name = models.CharField(max_length=255)
     country = CountryField()
-    field_of_study = models.CharField(max_length=255)
-    branch = models.CharField(max_length=255)
+    field_of_study = models.CharField(max_length=255, null=True, blank=True)
+    branch = models.CharField(max_length=255, null=True, blank=True)
     objects = StudentManager()  # Use the custom manager
 
     def __str__(self):
