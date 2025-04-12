@@ -133,28 +133,43 @@ class StudentViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         """
-        Create a new student, explicitly validating the project ID
+        Create a new student with manual ID support
         """
-        serializer = self.get_serializer(data=request.data)
+        data = request.data.copy()
+        student_id = data.pop('id', None)  # Extract ID if provided
+
+        # Check if ID already exists
+        if student_id is not None:
+            if Student.objects.filter(id=student_id).exists():
+                return Response(
+                    {'error': f'Student with ID {student_id} already exists'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+        # Validate other fields using serializer
+        serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
+        validated_data = serializer.validated_data
 
-        # Explicitly validate that the project exists
-        project_id = request.data.get('project')
-        if not project_id:
-            return Response({'error': 'project field is required'},
-                            status=status.HTTP_400_BAD_REQUEST)
-
+        # Create student using the custom manager
         try:
-            # Make sure the project exists
-            project = Project.objects.get(id=project_id)
-        except Project.DoesNotExist:
-            return Response({'error': f'Project with ID {project_id} does not exist'},
-                            status=status.HTTP_400_BAD_REQUEST)
-
-        # Save the student
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+            student = Student.objects.create_with_id(
+                student_id=student_id,
+                **validated_data
+            )
+            # Return the created student
+            result_serializer = self.get_serializer(student)
+            headers = self.get_success_headers(result_serializer.data)
+            return Response(
+                result_serializer.data,
+                status=status.HTTP_201_CREATED,
+                headers=headers
+            )
+        except Exception as e:
+            return Response(
+                {'error': str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
     @action(detail=False, methods=['get'])
     def by_project(self, request):

@@ -39,6 +39,18 @@ class Project(models.Model):
         return self.title
 
 
+class StudentManager(models.Manager):
+    def create_with_id(self, student_id=None, **kwargs):
+        """
+        Create a student with a specific ID if provided
+        """
+        student = self.model(**kwargs)
+        if student_id is not None:
+            student.id = student_id
+        student.save()
+        return student
+
+
 class Student(models.Model):
     id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=255)
@@ -49,6 +61,8 @@ class Student(models.Model):
         Project, on_delete=models.CASCADE, related_name='students')
     university_name = models.CharField(max_length=255)
     country = CountryField()
+
+    objects = StudentManager()  # Use the custom manager
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

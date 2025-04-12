@@ -5,6 +5,9 @@ from accounts.models import GuidanceAuthority
 
 
 class StudentSerializer(serializers.ModelSerializer):
+    # Explicitly define id field to make it visible in Swagger
+    id = serializers.IntegerField(required=False)
+
     class Meta:
         model = Student
         fields = ['id', 'first_name', 'last_name', 'email', 'phone_number',
