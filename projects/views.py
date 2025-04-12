@@ -17,9 +17,10 @@ class ProjectViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend,
                        filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['status', 'guidance_authority',
-                        'deadline', 'is_complete']  # Added is_complete
+                        'deadline', 'is_complete']
     search_fields = ['title', 'description']
-    ordering_fields = ['send_date', 'update_date', 'title']
+    ordering_fields = ['send_date', 'update_date',
+                       'title']
 
     @action(detail=True, methods=['post'])
     def update_status(self, request, pk=None):
@@ -128,8 +129,10 @@ class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ['project', 'university_name', 'country']
-    search_fields = ['first_name', 'last_name', 'email']
+    filterset_fields = ['project', 'university_name',
+                        'country', 'field_of_study', 'branch']
+    search_fields = ['first_name', 'last_name',
+                     'email', 'field_of_study', 'branch']
 
     def create(self, request, *args, **kwargs):
         """

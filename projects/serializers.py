@@ -11,7 +11,7 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = ['id', 'first_name', 'last_name', 'email', 'phone_number',
-                  'university_name', 'country', 'project']
+                  'university_name', 'country', 'project', 'field_of_study', 'branch']
 
 
 class ProjectSerializer(serializers.ModelSerializer):
