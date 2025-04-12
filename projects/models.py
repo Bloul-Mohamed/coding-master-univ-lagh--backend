@@ -1,3 +1,5 @@
+# Fix for projects/models.py
+
 from django.db import models
 from django_countries.fields import CountryField
 from accounts.models import GuidanceAuthority
@@ -33,6 +35,9 @@ class Project(models.Model):
         unique=True, null=True, blank=True)
     is_complete = models.BooleanField(default=False)  # New field added
 
+    def __str__(self):
+        return self.title
+
 
 class Student(models.Model):
     id = models.AutoField(primary_key=True)
@@ -45,6 +50,5 @@ class Student(models.Model):
     university_name = models.CharField(max_length=255)
     country = CountryField()
 
-
-def __str__(self):
-    return f"{self.first_name} {self.last_name}"
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"

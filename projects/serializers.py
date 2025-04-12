@@ -1,4 +1,4 @@
-# projects/serializers.py
+# Fix for projects/serializers.py
 from rest_framework import serializers
 from .models import Project, Student
 from accounts.models import GuidanceAuthority
@@ -8,17 +8,17 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = ['id', 'first_name', 'last_name', 'email', 'phone_number',
-                  'university_name', 'country']
+                  'university_name', 'country', 'project']
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    students = StudentSerializer(many=True, required=False)
+    students = StudentSerializer(many=True, required=False, read_only=True)
 
     class Meta:
         model = Project
         fields = ['id', 'title', 'description', 'send_date', 'update_date',
                   'status', 'guidance_authority', 'deadline', 'email',
-                  'backup_email', 'students', 'is_complete']  # Added is_complete field
+                  'backup_email', 'password', 'students', 'is_complete']  # Added password
         extra_kwargs = {
             'password': {'write_only': True},
             'send_date': {'read_only': True},
@@ -40,11 +40,16 @@ class ProjectSerializer(serializers.ModelSerializer):
         return project
 
     def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
         students_data = validated_data.pop('students', [])
 
         # Update the project instance
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
+
+        if password:
+            instance.password = password  # In a real app, use proper hashing here
+
         instance.save()
 
         # Handle students if provided

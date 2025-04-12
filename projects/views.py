@@ -131,6 +131,31 @@ class StudentViewSet(viewsets.ModelViewSet):
     filterset_fields = ['project', 'university_name', 'country']
     search_fields = ['first_name', 'last_name', 'email']
 
+    def create(self, request, *args, **kwargs):
+        """
+        Create a new student, explicitly validating the project ID
+        """
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # Explicitly validate that the project exists
+        project_id = request.data.get('project')
+        if not project_id:
+            return Response({'error': 'project field is required'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Make sure the project exists
+            project = Project.objects.get(id=project_id)
+        except Project.DoesNotExist:
+            return Response({'error': f'Project with ID {project_id} does not exist'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Save the student
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
     @action(detail=False, methods=['get'])
     def by_project(self, request):
         """
